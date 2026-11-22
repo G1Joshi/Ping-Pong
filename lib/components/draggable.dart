@@ -1,14 +1,13 @@
 import 'package:flame/components.dart';
-import 'package:flame/input.dart';
+import 'package:flame/events.dart';
 
 import '../components/bat.dart';
 
-class DraggableBat extends Bat with Draggable {
+class DraggableBat extends Bat with DragCallbacks {
   DraggableBat.solo(super.gameSize) : super.solo();
 
   @override
-  bool onDragUpdate(DragUpdateInfo info) {
-    position.add(Vector2(info.delta.game[0], 0));
-    return super.onDragUpdate(info);
+  void onDragUpdate(DragUpdateEvent event) {
+    position.add(Vector2(event.canvasDelta.x, 0));
   }
 }
