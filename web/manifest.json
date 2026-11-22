@@ -1,11 +1,11 @@
 {
-    "name": "ping_pong",
-    "short_name": "ping_pong",
+    "name": "Ping Pong",
+    "short_name": "Ping Pong",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A Game Based on Flutter Flame Engine.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
