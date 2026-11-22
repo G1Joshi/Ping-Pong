@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 
 import '../game.dart';
 import '../utils.dart';
 
-class Foreground extends Component with HasGameRef<MyGame> {
+class Foreground extends Component with HasGameReference<MyGame> {
   static const double width = 4.0;
   late Rect gameRect;
   final Rect rect = Vector2.zero() & Vector2(width / 2, width);
@@ -18,18 +17,18 @@ class Foreground extends Component with HasGameRef<MyGame> {
 
   @override
   void onGameResize(Vector2 size) {
-    gameRect = Vector2.zero() & gameRef.size;
+    gameRect = Vector2.zero() & game.size;
     super.onGameResize(size);
   }
 
   @override
   void render(Canvas canvas) {
-    if (gameRef.mode == GameMode.multiple) {
+    if (game.mode == GameMode.multiple) {
       canvas
         ..save()
         ..drawRect(gameRect, front)
-        ..translate(gameRef.size.x / 2 - rect.width / 2, width / 2);
-      for (var i = 0; i < gameRef.size.y / width; i++) {
+        ..translate(game.size.x / 2 - rect.width / 2, width / 2);
+      for (var i = 0; i < game.size.y / width; i++) {
         canvas
           ..drawRect(rect, mid)
           ..translate(0, width * 2);
