@@ -1,26 +1,21 @@
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../game.dart';
+import '../utils.dart';
 
-class Background extends Component with HasGameRef<MyGame> {
-  static const double width = 4.0;
-  late Rect gameRect;
-  final Rect rect = Vector2.zero() & Vector2(width / 2, width);
-  final Paint back = Paint()..color = const Color(0xff001122);
+class Background extends Component with HasGameReference<MyGame> {
+  late Rect _rect;
+  final Paint _bgPaint = Paint()..color = GameColors.background;
 
   @override
   void onGameResize(Vector2 size) {
-    gameRect = Vector2.zero() & gameRef.size;
+    _rect = Rect.fromLTWH(0, 0, game.size.x, game.size.y);
     super.onGameResize(size);
   }
 
   @override
   void render(Canvas canvas) {
-    canvas
-      ..save()
-      ..drawRect(gameRect, back);
-    canvas.restore();
+    canvas.drawRect(_rect, _bgPaint);
   }
 }

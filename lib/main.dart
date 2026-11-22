@@ -1,10 +1,17 @@
-import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flame/game.dart';
 
 import 'game.dart';
+import 'utils.dart';
 
-Future<void> main() async {
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const MyApp());
 }
 
@@ -13,24 +20,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      title: 'Ping Pong',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Home(),
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: GameColors.background,
+      ),
+      home: const Scaffold(
+        backgroundColor: GameColors.background,
+        body: SafeArea(child: GameScreen()),
       ),
     );
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class GameScreen extends StatelessWidget {
+  const GameScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: GameWidget(
-        game: MyGame(),
-      ),
-    );
+    return GameWidget(game: MyGame());
   }
 }
