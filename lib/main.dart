@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:flame/game.dart';
 
@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Home(),
-      ),
+      home: Scaffold(body: Home()),
     );
   }
 }
@@ -27,10 +25,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: GameWidget(
-        game: MyGame(),
-      ),
-    );
+    return SafeArea(child: GameWidget(game: MyGame()));
   }
 }

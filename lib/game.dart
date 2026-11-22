@@ -1,8 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame/input.dart';
+import 'package:flame/events.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 import 'components/background.dart';
@@ -14,8 +14,7 @@ import 'components/foreground.dart';
 import 'components/score.dart';
 import 'utils.dart';
 
-class MyGame extends FlameGame
-    with HasCollisionDetection, HasTappables, HasDraggables, KeyboardEvents {
+class MyGame extends FlameGame with HasCollisionDetection, KeyboardEvents {
   bool isGameStarted = false;
   int speed = 0;
   int miss = 0;
@@ -38,10 +37,7 @@ class MyGame extends FlameGame
     velocity1 = Vector2.zero();
     velocity2 = Vector2.zero();
     banner = GameBanner();
-    addAll([
-      Background(),
-      ScreenHitbox(),
-    ]);
+    addAll([Background(), ScreenHitbox()]);
     if (kIsWeb) {
       add(banner);
     } else {
@@ -49,7 +45,7 @@ class MyGame extends FlameGame
     }
   }
 
-  solo() {
+  void solo() {
     speed = 600;
     mode = GameMode.single;
     foreground = Foreground();
@@ -57,15 +53,10 @@ class MyGame extends FlameGame
     bat = DraggableBat.solo(size);
     points = Score.mid(mode);
     if (kIsWeb) remove(banner);
-    addAll([
-      foreground,
-      ball,
-      bat!,
-      points!,
-    ]);
+    addAll([foreground, ball, bat!, points!]);
   }
 
-  single() {
+  void single() {
     speed = 600;
     mode = GameMode.single;
     foreground = Foreground();
@@ -73,15 +64,10 @@ class MyGame extends FlameGame
     bat1 = Bat.top(size, mode);
     points = Score.mid(mode);
     if (kIsWeb) remove(banner);
-    addAll([
-      foreground,
-      ball,
-      bat1!,
-      points!,
-    ]);
+    addAll([foreground, ball, bat1!, points!]);
   }
 
-  multiple() {
+  void multiple() {
     speed = 500;
     mode = GameMode.multiple;
     foreground = Foreground();
@@ -91,44 +77,25 @@ class MyGame extends FlameGame
     player1 = Score.right(mode);
     player2 = Score.left(mode);
     if (kIsWeb) remove(banner);
-    addAll([
-      foreground,
-      ball,
-      bat1!,
-      bat2!,
-      player1!,
-      player2!,
-    ]);
+    addAll([foreground, ball, bat1!, bat2!, player1!, player2!]);
   }
 
-  reset() {
+  void reset() {
     if (ball.message != null) {
       remove(ball.message!);
       ball.message = null;
     }
     if (mode == GameMode.multiple) {
-      removeAll([
-        foreground,
-        ball,
-        bat1!,
-        bat2!,
-        player1!,
-        player2!,
-      ]);
+      removeAll([foreground, ball, bat1!, bat2!, player1!, player2!]);
     } else {
-      removeAll([
-        foreground,
-        ball,
-        bat1!,
-        points!,
-      ]);
+      removeAll([foreground, ball, bat1!, points!]);
     }
     speed = 0;
     add(banner);
   }
 
   @override
-  void update(dt) {
+  void update(double dt) {
     super.update(dt);
     final displacement1 = velocity1 * (speed * dt);
     bat1?.position.add(displacement1);
@@ -137,19 +104,30 @@ class MyGame extends FlameGame
   }
 
   @override
-  KeyEventResult onKeyEvent(event, keysPressed) {
-    final isKeyDown = event is RawKeyDownEvent;
+  KeyEventResult onKeyEvent(
+    KeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    final isKeyDown = event is KeyDownEvent;
     if (event.logicalKey == LogicalKeyboardKey.digit1) {
-      if (isKeyDown) if (speed == 0) single();
+      if (isKeyDown) {
+        if (speed == 0) single();
+      }
     }
     if (event.logicalKey == LogicalKeyboardKey.digit2) {
-      if (isKeyDown) if (speed == 0) multiple();
+      if (isKeyDown) {
+        if (speed == 0) multiple();
+      }
     }
     if (event.logicalKey == LogicalKeyboardKey.space) {
-      if (isKeyDown) if (!isGameStarted) ball.replay();
+      if (isKeyDown) {
+        if (!isGameStarted) ball.replay();
+      }
     }
     if (event.logicalKey == LogicalKeyboardKey.enter) {
-      if (isKeyDown) if (!isGameStarted) reset();
+      if (isKeyDown) {
+        if (!isGameStarted) reset();
+      }
     }
     if (mode == GameMode.multiple) {
       if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
