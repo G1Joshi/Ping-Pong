@@ -1,13 +1,9 @@
-import 'package:flame/components.dart';
-import 'package:flame/events.dart';
+import 'package:flame/game.dart';
+import 'package:material_ui/material_ui.dart';
 
-import '../components/bat.dart';
+import 'bat.dart';
 
-class DraggableBat extends Bat with DragCallbacks {
-  DraggableBat.solo(super.gameSize) : super.solo();
-
-  @override
-  void onDragUpdate(DragUpdateEvent event) {
-    position.add(Vector2(event.canvasDelta.x, 0));
-  }
+class DraggableBat extends Bat {
+  DraggableBat.solo([Vector2? gameSize])
+    : super(side: BatSide.bottom, color: const Color(0xFF34D399));
 }
